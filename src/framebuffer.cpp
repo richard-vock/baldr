@@ -1,4 +1,4 @@
-#include <framebuffer.hpp>
+#include <baldr/framebuffer.hpp>
 
 namespace baldr {
 

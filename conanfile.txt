@@ -1,8 +1,0 @@
-[requires]
-eigen/3.3.5@conan/stable
-fmt/5.2.1@bincrafters/stable
-glfw/3.2.1@bincrafters/stable
-glew/2.1.0@bincrafters/stable
-
-[generators]
-cmake

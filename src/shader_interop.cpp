@@ -1,4 +1,4 @@
-#include <shader_interop.hpp>
+#include <baldr/shader_interop.hpp>
 
 namespace baldr::detail {
 

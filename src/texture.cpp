@@ -1,4 +1,4 @@
-#include <texture.hpp>
+#include <baldr/texture.hpp>
 
 namespace baldr {
 

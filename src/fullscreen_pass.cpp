@@ -1,4 +1,4 @@
-#include <fullscreen_pass.hpp>
+#include <baldr/fullscreen_pass.hpp>
 
 namespace baldr {
 
