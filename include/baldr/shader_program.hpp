@@ -49,6 +49,11 @@ struct sampler_unit
     std::weak_ptr<shader_program> program;
 };
 
+struct framebuffer_depth_attachment {
+    const framebuffer_depth_attachment& operator=(const texture& tex) const;
+    std::weak_ptr<shader_program> program;
+};
+
 struct padding
 {
     padding(GLuint bt) : bytes(bt) {}
@@ -65,6 +70,8 @@ class shader_program : public std::enable_shared_from_this<shader_program>
 {
 protected:
     friend struct shader_output;
+    friend struct framebuffer_depth_attachment;
+
 public:
     static std::shared_ptr<shader_program>
     load(const std::string& shader_file, GLuint shader_type,
@@ -95,6 +102,9 @@ public:
     const sampler_unit&
     sampler(const std::string& name) const;
 
+    framebuffer_depth_attachment
+    depth_attachment();
+
     template <typename... Attrs>
     binding_point
     buffer_binding(vertex_array& vao, Attrs&&... attrs);
@@ -118,7 +128,7 @@ protected:
     query_uniforms_();
 
     void
-    attach_texture_(GLenum attachment, const texture& tex);
+    attach_texture_(GLenum attachment, const texture& tex, GLint level = 0);
 
 protected:
     GLuint shader_;

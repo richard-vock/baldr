@@ -12,6 +12,7 @@ conan_basic_setup(TARGETS)
 
 option(DEBUG_VERBOSE "Verbose debugging output" OFF)
 if (${DEBUG_VERBOSE})
+    message(STATUS "VERBOSE ENABLED")
     add_definitions(-DDEBUG_VERBOSE)
 endif()
 
@@ -19,14 +20,15 @@ add_compile_options(-Wall -Wextra -Werror -fPIC -g)
 
 add_library(baldr
     "src/data_buffer.cpp"
+    "src/framebuffer.cpp"
+    "src/offscreen_context.cpp"
+    "src/render_pass.cpp"
     "src/shader_interop.cpp"
     "src/shader_pipeline.cpp"
     "src/shader_program.cpp"
     "src/texture.cpp"
-    "src/vertex_array.cpp"
-    "src/framebuffer.cpp"
     "src/fullscreen_pass.cpp"
-    "src/offscreen_context.cpp"
+    "src/vertex_array.cpp"
 )
 target_compile_features(baldr PUBLIC cxx_std_17)
 target_link_libraries(baldr CONAN_PKG::eigen CONAN_PKG::fmt CONAN_PKG::glfw CONAN_PKG::glew "stdc++fs")

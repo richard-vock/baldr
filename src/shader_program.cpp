@@ -110,6 +110,13 @@ shader_output::operator=(const texture& tex) const {
     return *this;
 }
 
+const framebuffer_depth_attachment&
+framebuffer_depth_attachment::operator=(const texture& tex) const {
+    auto prog = program.lock();
+    prog->attach_texture_(GL_DEPTH_ATTACHMENT, tex);
+    return *this;
+}
+
 std::shared_ptr<shader_program>
 shader_program::load(const std::string& shader_file, GLuint shader_type,
                      const std::string& entry_point)
@@ -309,13 +316,13 @@ shader_program::query_input_()
 }
 
 void
-shader_program::attach_texture_(GLenum attachment, const texture& tex) {
+shader_program::attach_texture_(GLenum attachment, const texture& tex, GLint level) {
     if (shader_type_ != GL_FRAGMENT_SHADER) return;
     if (!fbo_->handle()) {
         // still backbuffer bound - create real FBO
         fbo_ = std::make_shared<framebuffer>(GL_FRAMEBUFFER);
     }
-    fbo_->attach(attachment, tex);
+    fbo_->attach(attachment, tex, level);
 }
 
 }  // namespace baldr

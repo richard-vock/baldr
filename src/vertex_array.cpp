@@ -23,6 +23,7 @@ vertex_array::handle() const {
 
 void
 vertex_array::bind() const {
+    glVertexArrayElementBuffer(handle_, ibo_->handle());
     glBindVertexArray(handle_);
 }
 
@@ -32,8 +33,8 @@ vertex_array::release() {
 }
 
 void
-vertex_array::set_index_buffer(const data_buffer& ibo) {
-    glVertexArrayElementBuffer(handle_, ibo.handle());
+vertex_array::set_index_buffer(std::shared_ptr<const data_buffer> ibo) {
+    ibo_ = ibo;
 }
 
 binding_point

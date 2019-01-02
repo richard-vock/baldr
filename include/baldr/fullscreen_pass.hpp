@@ -2,9 +2,9 @@
 
 #include "common.hpp"
 #include "shader_program.hpp"
-#include "shader_pipeline.hpp"
 #include "data_buffer.hpp"
 #include "vertex_array.hpp"
+#include "render_pass.hpp"
 
 namespace baldr {
 
@@ -16,16 +16,13 @@ public:
     virtual ~fullscreen_pass();
 
     void
-    render(const vec4i_t& viewport);
+    render(const render_options& viewport);
 
 protected:
-    std::shared_ptr<shader_program> fs_;
-    std::shared_ptr<shader_program> vs_;
-    std::shared_ptr<shader_pipeline> pipeline_;
-
     std::unique_ptr<data_buffer> vbo_;
-    std::unique_ptr<data_buffer> ibo_;
+    std::shared_ptr<data_buffer> ibo_;
     std::unique_ptr<vertex_array> vao_;
+    std::unique_ptr<render_pass> pass_;
 };
 
 }  // namespace baldr

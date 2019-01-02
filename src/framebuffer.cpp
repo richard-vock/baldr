@@ -33,9 +33,11 @@ void
 framebuffer::attach(GLenum attachment, const texture& tex, GLint level)
 {
     glNamedFramebufferTexture(handle_, attachment, tex.handle(), level);
-    attachments_.insert(attachment);
-    std::vector<GLenum> buffers(attachments_.begin(), attachments_.end());
-    glNamedFramebufferDrawBuffers(handle_, buffers.size(), buffers.data());
+    if (attachment != GL_DEPTH_ATTACHMENT && attachment != GL_STENCIL_ATTACHMENT && attachment != GL_DEPTH_STENCIL_ATTACHMENT) {
+        attachments_.insert(attachment);
+        std::vector<GLenum> buffers(attachments_.begin(), attachments_.end());
+        glNamedFramebufferDrawBuffers(handle_, buffers.size(), buffers.data());
+    }
 }
 
 void
@@ -55,7 +57,8 @@ framebuffer::detach(GLenum attachment)
 
 bool
 framebuffer::check() {
-    return GL_FRAMEBUFFER_COMPLETE == glCheckNamedFramebufferStatus(handle_, target_);
+    // backbuffer is always complete
+    return !handle_ || GL_FRAMEBUFFER_COMPLETE == glCheckNamedFramebufferStatus(handle_, target_);
 }
 
 void

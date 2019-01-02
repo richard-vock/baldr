@@ -37,6 +37,7 @@ public:
     void
     detach(GLenum attachment);
 
+    [[nodiscard]]
     bool
     check();
 

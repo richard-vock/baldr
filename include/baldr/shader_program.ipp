@@ -109,6 +109,11 @@ shader_program::sampler(const std::string& name) const {
     return find_it->second;
 }
 
+inline framebuffer_depth_attachment
+shader_program::depth_attachment() {
+    return { weak_from_this() };
+}
+
 inline std::shared_ptr<const framebuffer>
 shader_program::current_framebuffer() const {
     return fbo_;

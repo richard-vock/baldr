@@ -36,7 +36,7 @@ public:
 
     static void release();
 
-    void set_index_buffer(const data_buffer& ibo);
+    void set_index_buffer(std::shared_ptr<const data_buffer> ibo);
 
     [[nodiscard]] binding_point
     vertex_buffer_binding(const std::vector<vertex_attribute>& attributes, GLuint vertex_stride);
@@ -44,6 +44,7 @@ public:
 protected:
     GLuint handle_;
     GLuint next_binding_point_;
+    std::shared_ptr<const data_buffer> ibo_;
 };
 
 }  // namespace baldr

@@ -22,7 +22,7 @@
 
 namespace baldr {
 
-#if !(defined(NDEBUG)) || defined(DEBUG)
+#if !(defined(NDEBUG)) || defined(DEBUG) || defined(DEBUG_VERBOSE)
 constexpr bool debug = true;
 #ifdef DEBUG_VERBOSE
 constexpr bool debug_verbose = true;
