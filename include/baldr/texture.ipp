@@ -14,6 +14,18 @@ texture::r32f(Is... dimensions) {
 
 template <typename... Is>
 inline std::shared_ptr<texture>
+texture::rg32f(Is... dimensions) {
+    return std::shared_ptr<texture>(new texture(
+        dimensions...,
+        texture_specification{
+            .format = GL_RG,
+            .internal_format = GL_RG32F,
+        }
+    ));
+}
+
+template <typename... Is>
+inline std::shared_ptr<texture>
 texture::rgb32f(Is... dimensions) {
     return std::shared_ptr<texture>(new texture(
         dimensions...,

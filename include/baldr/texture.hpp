@@ -9,7 +9,8 @@ struct texture_specification
     GLuint format;
     GLuint internal_format;
     std::tuple<GLint, GLint> filter = {GL_LINEAR, GL_LINEAR};
-    std::tuple<GLint, GLint, GLint> wrap_mode = {GL_CLAMP_TO_EDGE, GL_CLAMP_TO_EDGE, GL_CLAMP_TO_EDGE};
+    std::tuple<GLint, GLint, GLint> wrap_mode = {
+        GL_CLAMP_TO_EDGE, GL_CLAMP_TO_EDGE, GL_CLAMP_TO_EDGE};
     GLuint levels = 1;
     GLuint border = 0;
 };
@@ -26,13 +27,20 @@ public:
 
     texture(const texture& other) = delete;
 
-    texture& operator=(const texture& other) = delete;
+    texture&
+    operator=(const texture& other) = delete;
 
     template <typename... Is>
-    static std::shared_ptr<texture> r32f(Is... dimensions);
+    static std::shared_ptr<texture>
+    r32f(Is... dimensions);
 
     template <typename... Is>
-    static std::shared_ptr<texture> rgb32f(Is... dimensions);
+    static std::shared_ptr<texture>
+    rg32f(Is... dimensions);
+
+    template <typename... Is>
+    static std::shared_ptr<texture>
+    rgb32f(Is... dimensions);
 
     template <typename... Is>
     static std::shared_ptr<texture>
@@ -44,7 +52,8 @@ public:
 
     virtual ~texture();
 
-    GLuint handle() const;
+    GLuint
+    handle() const;
 
     void
     set_filter(std::tuple<GLint, GLint> filter);
@@ -53,12 +62,15 @@ public:
     set_wrap_mode(std::tuple<GLint, GLint, GLint> wrap_mode);
 
     template <typename T>
-    void set(const T* data);
+    void
+    set(const T* data);
 
     template <typename T>
-    void get(GLint level, T* data);
+    void
+    get(GLint level, T* data);
 
-    void generate_mipmap();
+    void
+    generate_mipmap();
 
     uint32_t
     channel_count() const;

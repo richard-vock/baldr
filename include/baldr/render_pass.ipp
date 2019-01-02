@@ -12,6 +12,12 @@ render_pass::render(const render_options& opts, Func&& render_call) {
     glDepthMask(opts.depth_write);
     glColorMask(std::get<0>(opts.color_write), std::get<1>(opts.color_write), std::get<2>(opts.color_write), std::get<3>(opts.color_write));
 
+    if (opts.cull_face) {
+        glEnable(GL_CULL_FACE);
+    } else {
+        glDisable(GL_CULL_FACE);
+    }
+
     pipeline_->bind();
 
     for (auto && [var, tex] : opts.input) {

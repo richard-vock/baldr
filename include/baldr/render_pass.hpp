@@ -12,6 +12,7 @@ struct render_options {
     std::shared_ptr<texture> depth_attachment = nullptr;
     bool depth_test = true;
     bool depth_write = true;
+    bool cull_face = false;
     std::tuple<bool, bool, bool, bool> color_write = std::tuple(true, true, true, true);
     std::optional<float> clear_depth = std::nullopt;
     std::optional<vec4f_t> clear_color = std::nullopt;
