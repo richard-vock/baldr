@@ -6,9 +6,14 @@
 
 namespace baldr {
 
+struct texture_image {
+    std::shared_ptr<texture> tex;
+    int level;
+};
+
 struct render_options {
     std::vector<std::pair<std::string, std::shared_ptr<texture>>> input = {};
-    std::vector<std::pair<std::string, std::shared_ptr<texture>>> output = {};
+    std::vector<std::pair<std::string, std::variant<std::shared_ptr<texture>, texture_image>>> output = {};
     std::shared_ptr<texture> depth_attachment = nullptr;
     bool depth_test = true;
     bool depth_write = true;

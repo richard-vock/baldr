@@ -47,6 +47,16 @@ texture::set_wrap_mode(std::tuple<GLint, GLint, GLint> wrap_mode) {
     glTextureParameteri(handle_, GL_TEXTURE_WRAP_R, std::get<2>(wrap_mode));
 }
 
+void
+texture::set_max_level(int max_level) {
+    glTextureParameteri(handle_, GL_TEXTURE_MAX_LEVEL, max_level);
+}
+
+void
+texture::reset_max_level() {
+    glTextureParameteri(handle_, GL_TEXTURE_MAX_LEVEL, specs_.levels - 1);
+}
+
 template <typename T>
 void
 texture::set(const T* data) {

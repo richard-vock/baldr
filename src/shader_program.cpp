@@ -110,6 +110,12 @@ shader_output::operator=(const texture& tex) const {
     return *this;
 }
 
+void
+shader_output::bind_image(const texture& tex, int level) const {
+    auto prog = program.lock();
+    prog->attach_texture_(GL_COLOR_ATTACHMENT0 + location, tex, level);
+}
+
 const framebuffer_depth_attachment&
 framebuffer_depth_attachment::operator=(const texture& tex) const {
     auto prog = program.lock();

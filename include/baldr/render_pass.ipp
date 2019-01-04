@@ -25,7 +25,10 @@ render_pass::render(const render_options& opts, Func&& render_call) {
     }
 
     for (auto && [var, tex] : opts.output) {
-        fs_->output(var) = *tex;
+        std::visit(overloaded {
+            [&](std::shared_ptr<texture> t) { fs_->output(var) = *t; },
+            [&](texture_image img) { fs_->output(var).bind_image(*img.tex, img.level); }
+        }, tex);
     }
 
     if (opts.depth_attachment) {

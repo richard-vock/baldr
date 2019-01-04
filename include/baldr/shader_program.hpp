@@ -35,6 +35,9 @@ struct shader_output
     const shader_output&
     operator=(const texture& tex) const;
 
+    void
+    bind_image(const texture& tex, int level) const;
+
     GLenum type;
     GLint location;
     std::weak_ptr<shader_program> program;

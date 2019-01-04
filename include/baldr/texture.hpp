@@ -8,7 +8,7 @@ struct texture_specification
 {
     GLuint format;
     GLuint internal_format;
-    std::tuple<GLint, GLint> filter = {GL_LINEAR, GL_LINEAR};
+    std::tuple<GLint, GLint> filter = {GL_NEAREST, GL_NEAREST};
     std::tuple<GLint, GLint, GLint> wrap_mode = {
         GL_CLAMP_TO_EDGE, GL_CLAMP_TO_EDGE, GL_CLAMP_TO_EDGE};
     GLuint levels = 1;
@@ -60,6 +60,12 @@ public:
 
     void
     set_wrap_mode(std::tuple<GLint, GLint, GLint> wrap_mode);
+
+    void
+    set_max_level(int max_level);
+
+    void
+    reset_max_level();
 
     template <typename T>
     void
