@@ -2,7 +2,7 @@
 
 namespace baldr {
 
-fullscreen_pass::fullscreen_pass(std::shared_ptr<shader_program> fragment_shader) {
+fullscreen_pass::fullscreen_pass(std::shared_ptr<shader_program> fragment_shader) : fs_(fragment_shader) {
     Eigen::Matrix<float, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor> vertex_data(4, 2);
     vertex_data <<
          -1.0f, -1.0f,
@@ -37,20 +37,10 @@ fullscreen_pass::fullscreen_pass(std::shared_ptr<shader_program> fragment_shader
 
     auto vs = shader_program::from_code(vs_code, GL_VERTEX_SHADER);
     vs->buffer_binding(*vao_, "pos") = *vbo_;
-    pass_ = std::make_unique<render_pass>(vs, fragment_shader);
+    pass_ = std::make_unique<render_pass>(vs, fs_);
 }
 
 fullscreen_pass::~fullscreen_pass() {
-}
-
-void
-fullscreen_pass::render(const render_options& opts) {
-    render_options opt = opts;
-    opt.depth_test = false;
-    pass_->render(opt, [&] (auto, auto) {
-        vao_->bind();
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-    });
 }
 
 } // baldr
