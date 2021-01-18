@@ -5,7 +5,7 @@
 #include <fstream>
 #include <set>
 #include <streambuf>
-#include <ctre.hpp>
+//#include <ctre.hpp>
 
 namespace fs = std::filesystem;
 
@@ -103,6 +103,7 @@ preprocess_shaders(std::string entry_file, std::set<std::string> & already_inclu
     if (std::ifstream in(entry_file); in.good()) {
         std::string line;
         while (std::getline(in, line)) {
+            /*
             if (auto m = ctre::match<"\\s*[#]\\s*version\\s*(?<version>.+)">(line)) {
                 std::string_view version = m.get<"version">();
                 fmt::print("found version {} in file {}\n", version, entry_file);
@@ -124,9 +125,9 @@ preprocess_shaders(std::string entry_file, std::set<std::string> & already_inclu
                 if (!found) {
                     baldr::fail("Unable to find included shader file: {}", filename);
                 }
-            } else {
+            } else {*/
                 accum += line + "\n";
-            }
+            /*}*/
         }
     } else {
         baldr::fail("Cannot open shader file for reading: {}", entry_file);
@@ -350,7 +351,7 @@ shader_program::query_output_()
         glGetProgramResourceName(program_, GL_PROGRAM_OUTPUT, idx, name_len,
                                  &name_len, name.data());
 
-        output_[name] = {.type = static_cast<GLenum>(type), .location = loc, .program = weak_from_this()};
+        output_[name] = {static_cast<GLenum>(type), loc, weak_from_this()};
     }
 }
 
@@ -373,7 +374,7 @@ shader_program::query_input_()
         glGetProgramResourceName(program_, GL_PROGRAM_INPUT, idx, name_len,
                                  &name_len, name.data());
 
-        input_[name] = {.type = static_cast<GLenum>(type), .location = loc};
+        input_[name] = {static_cast<GLenum>(type), loc};
     }
 }
 
@@ -398,15 +399,15 @@ shader_program::query_uniforms_()
 
         GLuint binding_point = loc;
         if (is_sampler(type)) {
-            samplers_[name] = {.unit = tex_unit++,
-                               .location = loc,
-                               .program = weak_from_this()};
+            samplers_[name] = {tex_unit++,
+                               loc,
+                               weak_from_this()};
             continue;
         } else if (is_image(type)) {
             GLint unit = -1;
             glGetUniformiv(program_, loc, &unit);
             if (unit >= 0) {
-                images_[name] = {.unit = unit };
+                images_[name] = {unit };
             }
             continue;
         } else if (is_atomic_counter(type)) {
@@ -418,11 +419,11 @@ shader_program::query_uniforms_()
             ++atomic_counter;
         }
 
-        uniforms_[name] = {.type = static_cast<GLenum>(type),
-                           .count = static_cast<GLuint>(element_count),
-                           .location = loc,
-                           .binding_point = binding_point,
-                           .program = weak_from_this()};
+        uniforms_[name] = {static_cast<GLenum>(type),
+                           static_cast<GLuint>(element_count),
+                           loc,
+                           binding_point,
+                           weak_from_this()};
     }
 }
 
@@ -444,7 +445,7 @@ shader_program::query_ssbo_()
         glGetProgramResourceName(program_, GL_SHADER_STORAGE_BLOCK, idx, name_len, &name_len,
                                  name.data());
 
-        ssbo_[name] = shader_ssbo{.binding_point = static_cast<GLuint>(binding)};
+        ssbo_[name] = shader_ssbo{static_cast<GLuint>(binding)};
     }
 }
 

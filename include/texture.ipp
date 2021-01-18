@@ -6,8 +6,8 @@ texture::r32f(Is... dimensions) {
     return std::shared_ptr<texture>(new texture(
         dimensions...,
         texture_specification{
-            .format = GL_RED,
-            .internal_format = GL_R32F
+            GL_RED,
+            GL_R32F
         }
     ));
 }
@@ -18,8 +18,8 @@ texture::rg32f(Is... dimensions) {
     return std::shared_ptr<texture>(new texture(
         dimensions...,
         texture_specification{
-            .format = GL_RG,
-            .internal_format = GL_RG32F
+            GL_RG,
+            GL_RG32F
         }
     ));
 }
@@ -30,8 +30,8 @@ texture::rgb32f(Is... dimensions) {
     return std::shared_ptr<texture>(new texture(
         dimensions...,
         texture_specification{
-            .format = GL_RGB,
-            .internal_format = GL_RGB32F
+            GL_RGB,
+            GL_RGB32F
         }
     ));
 }
@@ -42,8 +42,8 @@ texture::rgba32f(Is... dimensions) {
     return std::shared_ptr<texture>(new texture(
         dimensions...,
         texture_specification{
-            .format = GL_RGBA,
-            .internal_format = GL_RGBA32F
+            GL_RGBA,
+            GL_RGBA32F
         }
     ));
 }
@@ -54,8 +54,8 @@ texture::rgb8ui(Is... dimensions) {
     return std::shared_ptr<texture>(new texture(
         dimensions...,
         texture_specification{
-            .format = GL_RGB_INTEGER,
-            .internal_format = GL_RGB8UI
+            GL_RGB_INTEGER,
+            GL_RGB8UI
         }
     ));
 }
@@ -66,8 +66,8 @@ texture::rgba8ui(Is... dimensions) {
     return std::shared_ptr<texture>(new texture(
         dimensions...,
         texture_specification{
-            .format = GL_RGBA_INTEGER,
-            .internal_format = GL_RGBA8UI
+            GL_RGBA_INTEGER,
+            GL_RGBA8UI
         }
     ));
 }
@@ -78,8 +78,8 @@ texture::rgb8(Is... dimensions) {
     return std::shared_ptr<texture>(new texture(
         dimensions...,
         texture_specification{
-            .format = GL_RGB,
-            .internal_format = GL_RGB8
+            GL_RGB,
+            GL_RGB8
         }
     ));
 }
@@ -90,8 +90,8 @@ texture::rgba8(Is... dimensions) {
     return std::shared_ptr<texture>(new texture(
         dimensions...,
         texture_specification{
-            .format = GL_RGBA,
-            .internal_format = GL_RGBA8
+            GL_RGBA,
+            GL_RGBA8
         }
     ));
 }
@@ -102,8 +102,8 @@ texture::depth32f(Is... dimensions) {
     return std::shared_ptr<texture>(new texture(
         dimensions...,
         texture_specification{
-            .format = GL_DEPTH_COMPONENT,
-            .internal_format = GL_DEPTH_COMPONENT32F
+            GL_DEPTH_COMPONENT,
+            GL_DEPTH_COMPONENT32F
         }
     ));
 }

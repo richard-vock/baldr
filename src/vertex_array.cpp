@@ -49,9 +49,9 @@ vertex_array::vertex_buffer_binding(const std::vector<vertex_attribute>& attribu
     }
 
     return {
-        .binding = bp,
-        .vao = handle_,
-        .stride = vertex_stride
+        bp,
+        handle_,
+        vertex_stride
     };
 }
 

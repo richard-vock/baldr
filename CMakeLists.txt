@@ -16,7 +16,10 @@ if (${DEBUG_VERBOSE})
     add_definitions(-DDEBUG_VERBOSE)
 endif()
 
-add_compile_options(-Wall -Wextra -Werror -fPIC -g -DEIGEN_DONT_VECTORIZE -DEIGEN_MAX_ALIGN_BYTES=0 -DEIGEN_MAX_STATIC_ALIGN_BYTES=0)
+if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+else()
+    add_compile_options(-Wall -Wextra -Werror -fPIC -g -DEIGEN_DONT_VECTORIZE -DEIGEN_MAX_ALIGN_BYTES=0 -DEIGEN_MAX_STATIC_ALIGN_BYTES=0)
+endif()
 
 add_library(baldr
     "src/compute_pass.cpp"
@@ -31,7 +34,7 @@ add_library(baldr
     "src/vertex_array.cpp"
 )
 target_compile_features(baldr PUBLIC cxx_std_17)
-target_link_libraries(baldr CONAN_PKG::Eigen3 CONAN_PKG::fmt "stdc++fs")
+target_link_libraries(baldr CONAN_PKG::eigen CONAN_PKG::fmt CONAN_PKG::glew "stdc++fs")
 
 install (TARGETS baldr DESTINATION lib)
 install (DIRECTORY include/ DESTINATION include/baldr)

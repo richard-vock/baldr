@@ -17,8 +17,10 @@
 #include <fmt/format.h>
 #include <fmt/ostream.h>
 
-#include <GL/glew.h>
-#include <GL/gl.h>
+#define NOMINMAX
+#include <windows.h>
+#include <GL/GLEW.h>
+#include <GL/GL.h>
 
 namespace baldr {
 

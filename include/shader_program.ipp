@@ -7,11 +7,11 @@ inline void
 add_binding_format_input(GLuint& offset, std::vector<vertex_attribute>& vinfo, shader_input inp, GLboolean normalized) {
     detail::attribute_format fmt = detail::shader_attribute_format(inp.type);
     vinfo.push_back({
-        .index = static_cast<GLuint>(inp.location),
-        .size = fmt.size,
-        .type = fmt.type,
-        .offset = offset,
-        .normalized = normalized
+        static_cast<GLuint>(inp.location),
+        fmt.size,
+        fmt.type,
+        offset,
+        normalized
     });
     offset += fmt.size * sizeof(fmt.type);
 }

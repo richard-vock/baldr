@@ -1,10 +1,11 @@
-from conans import ConanFile, CMake, tools
+from conans import ConanFile, CMake, MSBuild, tools
 
 
 class BaldrConan(ConanFile):
     name = "baldr"
-    requires = (("eigen/3.3.7@conan/stable"),
-                ("fmt/6.0.0@bincrafters/stable"))
+    requires = (("eigen/3.3.9"),
+                ("fmt/7.1.3"),
+                ("glew/2.1.0"))
     version = "0.1"
     license = "unlicense"
     author = "Richard Vock vock@cs.uni-bonn.de"
@@ -20,17 +21,16 @@ class BaldrConan(ConanFile):
     def build(self):
         cmake = CMake(self)
         cmake.definitions["DEBUG_VERBOSE"] = self.options.verbose
-        cmake.configure()#source_folder="hello")
-        cmake.build()
-
-        # Explicit way:
-        # self.run('cmake %s/hello %s'
-        #          % (self.source_folder, cmake.command_line))
-        # self.run("cmake --build . %s" % cmake.build_config)
+        cmake.configure()
+        if self.settings.os == "Windows":
+            msbuild = MSBuild(self)
+            msbuild.build("baldr.sln")
+        else:
+            cmake.build()
 
     def package(self):
-        self.copy("include/*.hpp")
-        self.copy("include/*.ipp")
+        self.copy("include/*.hpp", dst="include/baldr", keep_path=False)
+        self.copy("include/*.ipp", dst="include/baldr", keep_path=False)
         self.copy("*baldr.lib", dst="lib", keep_path=False)
         self.copy("*.dll", dst="bin", keep_path=False)
         self.copy("*.so", dst="lib", keep_path=False)
@@ -39,4 +39,3 @@ class BaldrConan(ConanFile):
 
     def package_info(self):
         self.cpp_info.libs = ["baldr"]
-
