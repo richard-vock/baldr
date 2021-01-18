@@ -1,4 +1,4 @@
-#include <baldr/render_pass.hpp>
+#include <render_pass.hpp>
 
 namespace baldr {
 

@@ -13,17 +13,18 @@ struct texture_specification
         GL_CLAMP_TO_EDGE, GL_CLAMP_TO_EDGE, GL_CLAMP_TO_EDGE};
     GLuint levels = 1;
     GLuint border = 0;
+    bool cubemap = false;
 };
 
 class texture
 {
 public:
-    texture(int32_t width, const texture_specification& specs);
+    texture(int32_t width, texture_specification specs);
 
-    texture(int32_t width, int32_t height, const texture_specification& specs);
+    texture(int32_t width, int32_t height, texture_specification specs);
 
     texture(int32_t width, int32_t height, int32_t depth,
-            const texture_specification& specs);
+            texture_specification specs);
 
     texture(const texture& other) = delete;
 
@@ -48,12 +49,40 @@ public:
 
     template <typename... Is>
     static std::shared_ptr<texture>
+    rgb8ui(Is... dimensions);
+
+    template <typename... Is>
+    static std::shared_ptr<texture>
+    rgba8ui(Is... dimensions);
+
+    template <typename... Is>
+    static std::shared_ptr<texture>
+    rgb8(Is... dimensions);
+
+    template <typename... Is>
+    static std::shared_ptr<texture>
+    rgba8(Is... dimensions);
+
+    template <typename... Is>
+    static std::shared_ptr<texture>
     depth32f(Is... dimensions);
 
     virtual ~texture();
 
     GLuint
     handle() const;
+
+    [[ nodiscard ]]
+    int width() const noexcept;
+
+    [[ nodiscard ]]
+    int height() const noexcept;
+
+    [[ nodiscard ]]
+    int depth() const noexcept;
+
+    [[ nodiscard ]]
+    int pixel_count() const noexcept;
 
     void
     set_filter(std::tuple<GLint, GLint> filter);
@@ -69,7 +98,23 @@ public:
 
     template <typename T>
     void
+    clear(T value, int level = 0);
+
+    template <typename T, int Channel>
+    void
+    clear(Eigen::Matrix<T, Channel, 1> values, int level = 0);
+
+    template <typename T>
+    void
     set(const T* data);
+
+    template <typename T>
+    void
+    set(const T* data, int cubemap_face, int level=0);
+
+    template <typename T>
+    void
+    set_cubemap_faces(const T* data, int level=0);
 
     template <typename T>
     void
@@ -80,6 +125,9 @@ public:
 
     uint32_t
     channel_count() const;
+
+    const texture_specification&
+    specification() const;
 
 protected:
     GLuint handle_;

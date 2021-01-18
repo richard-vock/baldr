@@ -28,4 +28,18 @@ fullscreen_pass::render(const render_options& opts, Uniforms&&... uniforms)
     });
 }
 
+template <typename PreRender, typename... Uniforms>
+inline void
+fullscreen_pass::render(PreRender&& pre_render, const render_options& opts, Uniforms&&... uniforms)
+{
+    detail::set_uniforms(fs_, std::forward<Uniforms>(uniforms)...);
+    render_options opt = opts;
+    opt.depth_test = false;
+    pass_->render(opt, [&](auto fs, auto vs) {
+        pre_render(fs, vs);
+        vao_->bind();
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+    });
+}
+
 }  // namespace baldr

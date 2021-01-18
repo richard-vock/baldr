@@ -1,4 +1,4 @@
-#include <baldr/fullscreen_pass.hpp>
+#include <fullscreen_pass.hpp>
 
 namespace baldr {
 
@@ -16,7 +16,7 @@ fullscreen_pass::fullscreen_pass(std::shared_ptr<shader_program> fragment_shader
     vao_->set_index_buffer(ibo_);
 
     std::string vs_code = R"shader(
-        #version 460
+        #version 450
 
         layout(location=0) in vec2 pos;
 

@@ -1,4 +1,4 @@
-#include <baldr/data_buffer.hpp>
+#include <data_buffer.hpp>
 
 namespace baldr {
 
@@ -27,5 +27,34 @@ data_buffer::set_data(const void* data) {
     glNamedBufferSubData(handle_, 0, byte_count_, data);
 }
 
+void
+data_buffer::get_data(void* data) const {
+    get_data(data, byte_count_);
+}
+
+void
+data_buffer::get_data(void* data, GLuint byte_count) const {
+    if (!allocated_) {
+        return;
+    }
+
+    memcpy(data, map(GL_MAP_READ_BIT), byte_count);
+    unmap();
+}
+
+void*
+data_buffer::map(GLbitfield access) {
+    return glMapNamedBufferRange(handle_, 0, byte_count_, access);
+}
+
+const void*
+data_buffer::map(GLbitfield access) const {
+    return glMapNamedBufferRange(handle_, 0, byte_count_, access);
+}
+
+void
+data_buffer::unmap() const {
+    glUnmapNamedBuffer(handle_);
+}
 
 } // baldr

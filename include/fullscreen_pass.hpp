@@ -19,6 +19,10 @@ public:
     void
     render(const render_options& opts, Uniforms&&... uniforms);
 
+    template <typename PreRender, typename... Uniforms>
+    void
+    render(PreRender&& pre_render, const render_options& opts, Uniforms&&... uniforms);
+
 protected:
     std::shared_ptr<shader_program> fs_;
     std::unique_ptr<data_buffer> vbo_;

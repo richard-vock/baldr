@@ -26,6 +26,24 @@ public:
     void
     set_data(const std::vector<T>& data);
 
+    void
+    get_data(void* data) const;
+
+    void
+    get_data(void* data, GLuint byte_count) const;
+
+    template <typename T>
+    void
+    get_data(std::vector<T>& data) const;
+
+    void*
+    map(GLbitfield access);
+
+    const void*
+    map(GLbitfield access) const;
+
+    void
+    unmap() const;
 
 protected:
     bool allocated_;

@@ -21,4 +21,11 @@ data_buffer::set_data(const std::vector<T>& data)
     set_data(reinterpret_cast<const void*>(data.data()));
 }
 
+template <typename T>
+void
+data_buffer::get_data(std::vector<T>& data) const
+{
+    get_data(reinterpret_cast<void*>(data.data()));
+}
+
 }  // namespace baldr

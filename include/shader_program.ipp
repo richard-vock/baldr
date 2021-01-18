@@ -109,6 +109,24 @@ shader_program::sampler(const std::string& name) const {
     return find_it->second;
 }
 
+inline const image_unit&
+shader_program::image(const std::string& name) const {
+    auto find_it = images_.find(name);
+    if (find_it == images_.end()) {
+        fail("Image unit \"{}\" not an active shader uniform", name);
+    }
+    return find_it->second;
+}
+
+inline const shader_ssbo&
+shader_program::ssbo(const std::string& name) const {
+    auto find_it = ssbo_.find(name);
+    if (find_it == ssbo_.end()) {
+        fail("SSBO \"{}\" not an active shader buffer", name);
+    }
+    return find_it->second;
+}
+
 inline framebuffer_depth_attachment
 shader_program::depth_attachment() {
     return { weak_from_this() };

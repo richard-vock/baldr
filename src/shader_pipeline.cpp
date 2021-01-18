@@ -1,4 +1,4 @@
-#include <baldr/shader_pipeline.hpp>
+#include <shader_pipeline.hpp>
 
 namespace baldr {
 

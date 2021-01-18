@@ -16,22 +16,23 @@ if (${DEBUG_VERBOSE})
     add_definitions(-DDEBUG_VERBOSE)
 endif()
 
-add_compile_options(-Wall -Wextra -Werror -fPIC -g)
+add_compile_options(-Wall -Wextra -Werror -fPIC -g -DEIGEN_DONT_VECTORIZE -DEIGEN_MAX_ALIGN_BYTES=0 -DEIGEN_MAX_STATIC_ALIGN_BYTES=0)
 
 add_library(baldr
+    "src/compute_pass.cpp"
     "src/data_buffer.cpp"
     "src/framebuffer.cpp"
-    "src/offscreen_context.cpp"
+    "src/fullscreen_pass.cpp"
     "src/render_pass.cpp"
+    "src/offscreen_context.cpp"
     "src/shader_interop.cpp"
     "src/shader_pipeline.cpp"
     "src/shader_program.cpp"
     "src/texture.cpp"
-    "src/fullscreen_pass.cpp"
     "src/vertex_array.cpp"
 )
 target_compile_features(baldr PUBLIC cxx_std_17)
-target_link_libraries(baldr CONAN_PKG::eigen CONAN_PKG::fmt CONAN_PKG::glfw CONAN_PKG::glew "stdc++fs")
+target_link_libraries(baldr CONAN_PKG::Eigen3 CONAN_PKG::fmt CONAN_PKG::glfw CONAN_PKG::glew "stdc++fs")
 
 install (TARGETS baldr DESTINATION lib)
 install (DIRECTORY include/ DESTINATION include/baldr)

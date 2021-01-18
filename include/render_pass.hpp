@@ -11,6 +11,23 @@ struct texture_image {
     int level;
 };
 
+enum class blend_mode : int {
+    zero,
+    one,
+    src_color,
+    dst_color,
+    src_alpha,
+    dst_alpha,
+    constant_color,
+    constant_alpha,
+    one_minus_src_color,
+    one_minus_dst_color,
+    one_minus_src_alpha,
+    one_minus_dst_alpha,
+    one_minus_constant_color,
+    one_minus_constant_alpha
+};
+
 struct render_options {
     std::vector<std::pair<std::string, std::shared_ptr<texture>>> input = {};
     std::vector<std::pair<std::string, std::variant<std::shared_ptr<texture>, texture_image>>> output = {};
@@ -21,6 +38,7 @@ struct render_options {
     std::tuple<bool, bool, bool, bool> color_write = std::tuple(true, true, true, true);
     std::optional<float> clear_depth = std::nullopt;
     std::optional<vec4f_t> clear_color = std::nullopt;
+    std::optional<std::pair<blend_mode, blend_mode>> blend = std::nullopt;
 };
 
 class render_pass

@@ -20,7 +20,6 @@ struct shader_uniform
     GLuint count;
     GLint location;
     GLuint binding_point;
-    std::optional<GLuint> image_access;
     std::weak_ptr<shader_program> program;
 };
 
@@ -43,6 +42,13 @@ struct shader_output
     std::weak_ptr<shader_program> program;
 };
 
+struct shader_ssbo
+{
+    const shader_ssbo& operator=(const data_buffer& buffer) const;
+
+    GLuint binding_point;
+};
+
 struct sampler_unit
 {
     const sampler_unit& operator=(const texture& tex) const;
@@ -50,6 +56,22 @@ struct sampler_unit
     GLuint unit;
     GLint location;
     std::weak_ptr<shader_program> program;
+};
+
+struct image_unit
+{
+    // access is defaulted since it is assumed to be restricted inside the shader
+    void
+    bind(const texture& tex, int level = 0, GLenum access = GL_READ_WRITE) const;
+
+    void
+    release(const texture& tex, int level = 0) const;
+
+    // same as above with default level/access
+    const image_unit&
+    operator=(const texture& tex) const;
+
+    GLint unit;
 };
 
 struct framebuffer_depth_attachment {
@@ -77,7 +99,9 @@ protected:
 
 public:
     static std::shared_ptr<shader_program>
-    load(const std::string& shader_file, GLuint shader_type,
+    load(const std::string& shader_file,
+         GLuint shader_type,
+         std::vector<std::string> const& include_dirs = {},
          const std::string& entry_point = "main");
 
     static std::shared_ptr<shader_program>
@@ -105,6 +129,12 @@ public:
     const sampler_unit&
     sampler(const std::string& name) const;
 
+    const image_unit&
+    image(const std::string& name) const;
+
+    const shader_ssbo&
+    ssbo(const std::string& name) const;
+
     framebuffer_depth_attachment
     depth_attachment();
 
@@ -121,6 +151,15 @@ public:
 protected:
     shader_program();
 
+    static std::shared_ptr<shader_program>
+    load_binary(const std::string& shader_file, GLuint shader_type,
+                const std::string& entry_point = "main");
+
+    static std::shared_ptr<shader_program>
+    load_code(const std::string& shader_file,
+              GLuint shader_type,
+              std::vector<std::string> const& include_dirs);
+
     void
     query_output_();
 
@@ -129,6 +168,9 @@ protected:
 
     void
     query_uniforms_();
+
+    void
+    query_ssbo_();
 
     void
     attach_texture_(GLenum attachment, const texture& tex, GLint level = 0);
@@ -140,8 +182,10 @@ protected:
     std::shared_ptr<framebuffer> fbo_;
     std::map<std::string, shader_uniform> uniforms_;
     std::map<std::string, sampler_unit> samplers_;
+    std::map<std::string, image_unit> images_;
     std::map<std::string, shader_input> input_;
     std::map<std::string, shader_output> output_;
+    std::map<std::string, shader_ssbo> ssbo_;
 };
 
 }  // namespace baldr

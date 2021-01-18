@@ -1,4 +1,4 @@
-#include <baldr/vertex_array.hpp>
+#include <vertex_array.hpp>
 
 namespace baldr {
 

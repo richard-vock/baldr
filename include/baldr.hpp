@@ -4,6 +4,7 @@
 #include "data_buffer.hpp"
 #include "framebuffer.hpp"
 #include "fullscreen_pass.hpp"
+#include "compute_pass.hpp"
 #include "offscreen_context.hpp"
 #include "render_pass.hpp"
 #include "shader_interop.hpp"
