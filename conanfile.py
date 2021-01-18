@@ -4,9 +4,7 @@ from conans import ConanFile, CMake, tools
 class BaldrConan(ConanFile):
     name = "baldr"
     requires = (("eigen/3.3.7@conan/stable"),
-                ("fmt/6.0.0@bincrafters/stable"),
-                ("glfw/3.2.1@bincrafters/stable", "private"),
-                ("glew/2.1.0@bincrafters/stable"))
+                ("fmt/6.0.0@bincrafters/stable"))
     version = "0.1"
     license = "unlicense"
     author = "Richard Vock vock@cs.uni-bonn.de"
