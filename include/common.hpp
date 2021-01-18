@@ -17,8 +17,11 @@
 #include <fmt/format.h>
 #include <fmt/ostream.h>
 
+#ifdef _MSC_VER
 #define NOMINMAX
 #include <windows.h>
+#endif
+
 #include <GL/GLEW.h>
 #include <GL/GL.h>
 

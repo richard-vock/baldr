@@ -5,7 +5,10 @@
 #include <fstream>
 #include <set>
 #include <streambuf>
-//#include <ctre.hpp>
+
+#ifndef _MSC_VER
+#include <ctre.hpp>
+#endif
 
 namespace fs = std::filesystem;
 
@@ -103,7 +106,7 @@ preprocess_shaders(std::string entry_file, std::set<std::string> & already_inclu
     if (std::ifstream in(entry_file); in.good()) {
         std::string line;
         while (std::getline(in, line)) {
-            /*
+#ifndef _MSC_VER
             if (auto m = ctre::match<"\\s*[#]\\s*version\\s*(?<version>.+)">(line)) {
                 std::string_view version = m.get<"version">();
                 fmt::print("found version {} in file {}\n", version, entry_file);
@@ -125,9 +128,12 @@ preprocess_shaders(std::string entry_file, std::set<std::string> & already_inclu
                 if (!found) {
                     baldr::fail("Unable to find included shader file: {}", filename);
                 }
-            } else {*/
+            } else {
+#endif
                 accum += line + "\n";
-            /*}*/
+#ifndef _MSC_VER
+            }
+#endif
         }
     } else {
         baldr::fail("Cannot open shader file for reading: {}", entry_file);
