@@ -22,8 +22,8 @@
 #include <windows.h>
 #endif
 
-#include <GL/GLEW.h>
-#include <GL/GL.h>
+#include <GL/glew.h>
+#include <GL/gl.h>
 
 namespace baldr {
 
