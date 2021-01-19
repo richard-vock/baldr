@@ -33,7 +33,11 @@ add_library(baldr
     "src/texture.cpp"
     "src/vertex_array.cpp"
 )
-target_compile_features(baldr PUBLIC cxx_std_17)
+if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+    target_compile_features(baldr PUBLIC cxx_std_17)
+else()
+    target_compile_features(baldr PUBLIC cxx_std_20)
+endif()
 target_link_libraries(baldr CONAN_PKG::eigen CONAN_PKG::fmt CONAN_PKG::glew "stdc++fs")
 
 install (TARGETS baldr DESTINATION lib)
