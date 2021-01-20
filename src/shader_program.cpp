@@ -226,6 +226,55 @@ shader_program::load(const std::string& shader_file,
 }
 
 std::shared_ptr<shader_program>
+shader_program::load_binary(const std::string& shader_file,
+                            GLuint shader_type,
+                            const std::string& entry_point)
+{
+    std::shared_ptr<shader_program> self(new shader_program());
+    self->shader_type_ = shader_type;
+
+    if (std::ifstream in(shader_file,
+                         std::ios::ate | std::ios::binary);
+        in.good()) {
+        std::streamsize size = in.tellg();
+        in.seekg(0, std::ios::beg);
+        std::vector<char> content(size);
+        in.read(content.data(), size);
+
+        self->shader_ = glCreateShader(shader_type);
+        glShaderBinary(1, &self->shader_, GL_SHADER_BINARY_FORMAT_SPIR_V,
+                       content.data(), content.size());
+        glSpecializeShaderARB(self->shader_, entry_point.c_str(), 0, nullptr, nullptr);
+        self->program_ = glCreateProgram();
+        glProgramParameteri(self->program_, GL_PROGRAM_SEPARABLE, GL_TRUE);
+        glAttachShader(self->program_, self->shader_);
+        glLinkProgram(self->program_);
+        glDetachShader(self->program_, self->shader_);
+
+        self->fbo_ = backbuffer();
+
+        self->query_uniforms_();
+        self->query_input_();
+        self->query_output_();
+        self->query_ssbo_();
+    } else {
+        fail("Unable to read shader file \"{}\"", shader_file);
+    }
+
+    return self;
+}
+
+std::shared_ptr<shader_program>
+shader_program::load_code(const std::string& shader_file,
+                          GLuint shader_type,
+                          std::vector<std::string> const& include_dirs)
+{
+    std::string code = preprocess_shaders(shader_file, include_dirs);
+    // fmt::print("final code: \n{}\n", code);
+    return shader_program::from_code(code, shader_type);
+}
+
+std::shared_ptr<shader_program>
 shader_program::from_code(const std::string& code, GLuint shader_type)
 {
     std::shared_ptr<shader_program> self(new shader_program());
@@ -288,55 +337,6 @@ shader_program::~shader_program()
 }
 
 shader_program::shader_program() : shader_(0), program_(0) {}
-
-std::shared_ptr<shader_program>
-shader_program::load_binary(const std::string& shader_file,
-                            GLuint shader_type,
-                            const std::string& entry_point)
-{
-    std::shared_ptr<shader_program> self(new shader_program());
-    self->shader_type_ = shader_type;
-
-    if (std::ifstream in(shader_file,
-                         std::ios::ate | std::ios::binary);
-        in.good()) {
-        std::streamsize size = in.tellg();
-        in.seekg(0, std::ios::beg);
-        std::vector<char> content(size);
-        in.read(content.data(), size);
-
-        self->shader_ = glCreateShader(shader_type);
-        glShaderBinary(1, &self->shader_, GL_SHADER_BINARY_FORMAT_SPIR_V,
-                       content.data(), content.size());
-        glSpecializeShaderARB(self->shader_, entry_point.c_str(), 0, nullptr, nullptr);
-        self->program_ = glCreateProgram();
-        glProgramParameteri(self->program_, GL_PROGRAM_SEPARABLE, GL_TRUE);
-        glAttachShader(self->program_, self->shader_);
-        glLinkProgram(self->program_);
-        glDetachShader(self->program_, self->shader_);
-
-        self->fbo_ = backbuffer();
-
-        self->query_uniforms_();
-        self->query_input_();
-        self->query_output_();
-        self->query_ssbo_();
-    } else {
-        fail("Unable to read shader file \"{}\"", shader_file);
-    }
-
-    return self;
-}
-
-std::shared_ptr<shader_program>
-shader_program::load_code(const std::string& shader_file,
-                          GLuint shader_type,
-                          std::vector<std::string> const& include_dirs)
-{
-    std::string code = preprocess_shaders(shader_file, include_dirs);
-    // fmt::print("final code: \n{}\n", code);
-    return shader_program::from_code(code, shader_type);
-}
 
 void
 shader_program::query_output_()
