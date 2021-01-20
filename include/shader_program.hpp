@@ -105,6 +105,15 @@ public:
          const std::string& entry_point = "main");
 
     static std::shared_ptr<shader_program>
+    load_binary(const std::string& shader_file, GLuint shader_type,
+                const std::string& entry_point = "main");
+
+    static std::shared_ptr<shader_program>
+    load_code(const std::string& shader_file,
+              GLuint shader_type,
+              std::vector<std::string> const& include_dirs);
+
+    static std::shared_ptr<shader_program>
     from_code(const std::string& code, GLuint shader_type);
 
     ~shader_program();
@@ -150,15 +159,6 @@ public:
 
 protected:
     shader_program();
-
-    static std::shared_ptr<shader_program>
-    load_binary(const std::string& shader_file, GLuint shader_type,
-                const std::string& entry_point = "main");
-
-    static std::shared_ptr<shader_program>
-    load_code(const std::string& shader_file,
-              GLuint shader_type,
-              std::vector<std::string> const& include_dirs);
 
     void
     query_output_();
