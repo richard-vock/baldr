@@ -19,6 +19,13 @@ public:
 
     GLuint handle() const;
 
+    GLuint
+    byte_count() const;
+
+    template <typename T>
+    uint32_t
+    value_count() const;
+
     void
     set_data(const void* data);
 

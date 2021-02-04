@@ -16,6 +16,11 @@ data_buffer::handle() const {
     return handle_;
 }
 
+GLuint
+data_buffer::byte_count() const {
+    return byte_count_;
+}
+
 void
 data_buffer::set_data(const void* data) {
     if (!allocated_) {

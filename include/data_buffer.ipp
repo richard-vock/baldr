@@ -15,6 +15,12 @@ data_buffer::data_buffer(const Eigen::PlainObjectBase<Derived>& data,
 {}
 
 template <typename T>
+uint32_t
+data_buffer::value_count() const {
+    return byte_count_ / sizeof(T);
+}
+
+template <typename T>
 void
 data_buffer::set_data(const std::vector<T>& data)
 {
