@@ -52,6 +52,9 @@ public:
     void
     unmap() const;
 
+    void
+    clear_to_zero();
+
 protected:
     bool allocated_;
     GLuint byte_count_;

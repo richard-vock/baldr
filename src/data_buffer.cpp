@@ -62,4 +62,9 @@ data_buffer::unmap() const {
     glUnmapNamedBuffer(handle_);
 }
 
+void
+data_buffer::clear_to_zero() {
+    glClearNamedBufferData(handle_, GL_R32UI, GL_RED, GL_UNSIGNED_INT, nullptr);
+}
+
 } // baldr
